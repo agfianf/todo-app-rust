@@ -1,4 +1,3 @@
--- Pastikan berisi kode berikut
 -- Enable extension untuk UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -11,3 +10,4 @@ CREATE TABLE IF NOT EXISTS todos (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+

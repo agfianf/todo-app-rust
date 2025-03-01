@@ -20,9 +20,9 @@ pub async fn init_db(database_url: &str) -> Result<DbPool, sqlx::Error> {
 
     // Run migrations - similar to Alembic's upgrade in Python
     // The ! indicates this is a macro call, not a regular function
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await?;
+    // sqlx::migrate!("./migrations")
+    //     .run(&pool)
+    //     .await?;
 
     // Return the pool - successful Result<T, E> (like returning a value in Python)
     Ok(pool)

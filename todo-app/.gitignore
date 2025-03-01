@@ -1,0 +1,26 @@
+target/
+tmp
+
+# SQLx query cache (kalau nggak perlu di container)
+.sqlx
+
+# Rust build artifacts
+/target
+
+# Lock file (opsional)
+/Cargo.lock
+
+# Local environment files
+.env
+
+# Temporary files
+*.tmp
+*.swp
+
+# Rust-specific IDE files
+.idea/          # IntelliJ
+*.rs.bk         # Rust Rover backups
+.vscode/        # VS Code settings (kecuali kalau mau share)
+
+# Docs generated
+/docs/

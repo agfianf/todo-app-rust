@@ -1,0 +1,20 @@
+# Git-related stuff
+.git
+.gitignore
+
+# Rust build artifacts
+target
+Cargo.lock
+
+# Local environment files
+.env
+
+# Temp files
+tmp
+
+# SQLx query cache (kalau nggak perlu di container)
+# Don't forget to run `cargo sqlx prepare` before building the image
+# .sqlx
+
+# Docs yang nggak perlu di container
+readme.md

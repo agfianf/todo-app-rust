@@ -7,8 +7,12 @@ A simple Todo API built with Rust, Actix-web, Sqlx and PostgreSQL.
 
 ## Prerequisites
 
-- Rust and Cargo
+- Rust and Cargo (for development)
 - Docker and Docker Compose
+
+## Architecture
+
+![architecture](./assets/architecture.png)
 
 ## Getting Started
 

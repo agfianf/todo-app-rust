@@ -31,4 +31,4 @@ docker-compose up -d
 
 ## Todo App in Rust
 
-![simple frontend](./assets/app-todo.png)
+![simple frontend](./assets/app-todo-1.png)

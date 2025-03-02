@@ -1,6 +1,7 @@
 // Modules import in Rust (like Python's import statements)
 // actix_web is a web framework similar to FastAPI in Python
 use actix_web::{web, App, HttpServer, middleware::Logger};
+use actix_cors::Cors; // Tambah ini
 use dotenv::dotenv;
 use std::env;
 
@@ -36,8 +37,16 @@ async fn main() -> std::io::Result<()> {
     // Create and start HTTP server
     // Similar to FastAPI's uvicorn.run() in Python
     HttpServer::new(move || {
+        // Tambah CORS middleware, mirip FastAPI CORSMiddleware
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:8081") // Izinin origin frontend
+            .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+            .allowed_headers(vec![actix_web::http::header::CONTENT_TYPE])
+            .max_age(3600);
+
         // App::new() is similar to FastAPI() in Python
         App::new()
+            .wrap(cors)
             // Middleware in Rust (similar to FastAPI's app.add_middleware())
             .wrap(Logger::default())
             // Dependency injection (similar to FastAPI's Depends())

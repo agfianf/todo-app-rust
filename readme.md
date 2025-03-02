@@ -27,4 +27,8 @@ docker-compose up -d
 - `GET /api/todos/{id}` - Get a specific todo
 - `PUT /api/todos/{id}` - Update a todo
 - `DELETE /api/todos/{id}` - Delete a todo
-```
+
+
+## Todo App in Rust
+
+![simple frontend](./assets/app-todo-1.png)

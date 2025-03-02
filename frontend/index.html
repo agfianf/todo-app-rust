@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        /* CSS mobile-friendly */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #todo-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .todo-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .todo-content {
+            flex: 1;
+            min-width: 0;
+        }
+        /* Responsive design */
+        @media (max-width: 600px) {
+            #todo-form {
+                flex-direction: column;
+            }
+            input[type="text"] {
+                width: 100%;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo App</h1>
+    
+    <!-- Form buat bikin todo baru, mirip FastAPI request body -->
+    <form id="todo-form">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="description" placeholder="Description">
+        <button type="submit">Add Todo</button>
+    </form>
+
+    <!-- Tempat nampilin list todo dari API -->
+    <div id="todo-list"></div>
+
+    <script>
+        // Base URL API Rust, kayak FastAPI BASE_URL
+        const API_URL = 'http://localhost:8080/api'; // 'localhost' karena akses via browser
+
+        // Ambil semua todo, mirip @app.get("/todos") di FastAPI
+        async function fetchTodos() {
+            try {
+                const response = await fetch(`${API_URL}/todos`);
+                const todos = await response.json();
+                renderTodos(todos);
+            } catch (error) {
+                console.error('Error fetching todos:', error); // Kayak print() di Python
+            }
+        }
+
+        // Render todo ke HTML, mirip ngolah response JSON di FastAPI
+        function renderTodos(todos) {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = ''; // Bersihin list, kayak reset variable di Python
+            todos.forEach(todo => {
+                const div = document.createElement('div');
+                div.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                div.innerHTML = `
+                    <div class="todo-content">
+                        <strong>${todo.title}</strong>: ${todo.description || '-'}
+                    </div>
+                    <button onclick="toggleTodo('${todo.id}', ${!todo.completed})">
+                        ${todo.completed ? 'Undo' : 'Complete'}
+                    </button>
+                    <button onclick="deleteTodo('${todo.id}')">Delete</button>
+                `;
+                todoList.appendChild(div);
+            });
+        }
+
+        // Submit form, mirip @app.post("/todos") dengan body JSON
+        document.getElementById('todo-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Kayak stop default Flask/FastAPI behavior
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            try {
+                const response = await fetch(`${API_URL}/todos`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description }) // Kayak pydantic model
+                });
+                if (response.ok) {
+                    document.getElementById('todo-form').reset();
+                    fetchTodos(); // Refresh, kayak redirect setelah POST di FastAPI
+                }
+            } catch (error) {
+                console.error('Error creating todo:', error); // Kayak raise HTTPException
+            }
+        });
+
+        // Toggle status, mirip @app.put("/todos/{id}")
+        async function toggleTodo(id, completed) {
+            try {
+                const response = await fetch(`${API_URL}/todos/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ completed }) // Partial update, kayak patch di FastAPI
+                });
+                if (response.ok) fetchTodos();
+            } catch (error) {
+                console.error('Error updating todo:', error);
+            }
+        }
+
+        // Hapus todo, mirip @app.delete("/todos/{id}")
+        async function deleteTodo(id) {
+            try {
+                const response = await fetch(`${API_URL}/todos/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) fetchTodos();
+            } catch (error) {
+                console.error('Error deleting todo:', error);
+            }
+        }
+
+        // Jalankan pas load, kayak startup event di FastAPI
+        fetchTodos();
+    </script>
+</body>
+</html>

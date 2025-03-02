@@ -28,3 +28,7 @@ docker-compose up -d
 - `PUT /api/todos/{id}` - Update a todo
 - `DELETE /api/todos/{id}` - Delete a todo
 ```
+
+## Todo App in Rust
+
+![simple frontend](./assets/app-todo.png)

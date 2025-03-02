@@ -1,7 +1,7 @@
 # Todo App in Rust
 
 
-A simple Todo API built with Rust, Actix-web, and PostgreSQL.
+A simple Todo API built with Rust, Actix-web, Sqlx and PostgreSQL.
 
 > Try to learn rust by building a simple todo app.
 
